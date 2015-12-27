@@ -2,10 +2,11 @@ var Universe = require('../models/Universe.js');
 
 module.exports = {
 
+	//tested 
 	create: function(req, res){
 		console.log(req); 
 		var newUniverse = new Universe(req.body); 
-		newUniverse.owner = req.user._id; 
+		// newUniverse.owner = req.user._id; //commented out for dev
 		newUniverse.save(function(err, universe){
 			if(err) {
 				console.log("Error creating Universe", err); 
@@ -21,12 +22,13 @@ module.exports = {
 		.findByIdAndUpdate(req.params.id, 
 			{
 				name: req.body.name,
+				// owner: req.user._id,
 				isPublic: req.body.isPublic
 			})
 		.exec(function(err, universe){
 			if(err){
-				console.log("Error updating Universe", err)
-				return res.status(500).end(); 
+				console.log("Error updating Universe", err); 
+				res.status(500).end(); 
 			}
 			return res.status(200).json(universe).end(); 
 		})
@@ -46,11 +48,11 @@ module.exports = {
 	},
 
 	listAll: function(req, res){
-		console.log("_id:", req.user._id);
-		console.log("id:", req.user.id); 
+		// console.log("_id:", req.user._id);
+		// console.log("id:", req.user.id); 
 
 		Universe
-		.find({ 'owner': req.user._id }, function(err, data){
+		.find({ 'owner': 'dylanlott' }, function(err, data){ //change to req.user._id once auth is setup 
 			if(err){
 				return res.status(500).end(); 
 			}	

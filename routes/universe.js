@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var WorldController = require('../controllers/UniverseController.js'); 
+var Universe = require('../controllers/UniverseController.js'); 
 
 /* GET users listing. */
-router.get('/universe', Universe.listAll); 
-router.get('/universe/:id', Universe.listOne); //takes a world ID 
-router.post('/universe', Universe.create); 
-router.put('/universe/:id', Universe.update); 
-router.delete('/universe/:id', Universe.delete); 
+router.get('/', Universe.listAll); 
+router.get('/:id', Universe.listOne); //takes a world ID 
+router.post('/', Universe.create); 
+router.put('/:id', Universe.update); 
+router.delete('/:id', Universe.delete); 
 
 module.exports = router;
