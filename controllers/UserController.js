@@ -2,6 +2,13 @@ var User = require('../models/User.js');
 
 module.exports = {
 
+  requireAuth: function(req, res, next) {
+    if (!req.isAuthenticated()) {
+      return res.status(403).send({message: "Logged In"   }).end();
+    }
+    return next();
+  },
+
   createUser: function(req, res) {
     console.log("create users api hit"); 
     User.findOne({ email: req.body.email })
@@ -23,7 +30,7 @@ module.exports = {
             console.log("can't create user", err);
           }
           res.json(new_user);
-        })
+        });
     })
   }
 
