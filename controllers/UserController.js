@@ -1,4 +1,5 @@
 var User = require('../models/User.js'); 
+var mongoose = require('mongoose');
 
 module.exports = {
 

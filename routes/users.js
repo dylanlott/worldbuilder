@@ -11,6 +11,48 @@ var session = require('express-session');
 **********************************************************************/
 //Auth
 
+//Local login setup 
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+}, function(username, password, done) {
+  User
+  .findOne({ email: username })
+  .exec()
+  .then(function(user) {
+    if (!user) {
+      return done(null, false);
+      console.log('no user');
+    }
+    user.comparePassword(password).then(function(isMatch) {
+      if (!isMatch) {
+        console.log('no match');
+        return done(null, false);
+      }
+      return done(null, user);
+    });
+  });
+}));
+
+//Authorization check
+var requireAuth = function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.status(403).send({message: "Logged In"   }).end();
+  }
+  return next();
+}
+
+//Deserializer
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
 // POST to '/users/'
 router.post('/', User.createUser); 
 
